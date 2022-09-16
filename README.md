@@ -142,21 +142,21 @@ console.log(a.value);
 // 2. 点击事件，触发trigger，通知vue更新，const counter = ref(0)不会再执行，重新渲染再拿一次结果，拿到value的新值，去渲染
 export default {
   setup() {
-    const counter = ref(0)
+    const counter = ref(0);
     return () => (
       <div>
         {counter.value}
         <button
           onClick={() => {
-            counter.value++
+            counter.value++;
           }}
         >
           add
         </button>
       </div>
-    )
-  }
-}
+    );
+  },
+};
 ```
 
 ### Reative 是一个代理对象 - 代理对象 proxy，复习 proxy
@@ -203,22 +203,22 @@ set(..) {
 function useCommonX() {
   const state = reactive({
     x: 1,
-    y: 2
-  })
+    y: 2,
+  });
   // 逻辑运行状态
   // 返回时转换为ref
-  return toRefs(state)
+  return toRefs(state);
 }
 export default {
   setup() {
     // 可以在不丢失响应式的情况下破坏解构
-    const { x, y } = useCommonX()
+    const { x, y } = useCommonX();
     return {
       x,
-      y
-    }
-  }
-}
+      y,
+    };
+  },
+};
 ```
 
 ## 深入学习？
@@ -238,15 +238,15 @@ export default {
 // .value 可以实现响应式，保持响应式
 function computed(getter) {
   const ref = {
-    value: null
-  }
+    value: null,
+  };
   setTimeout(() => {
-    ref.value = getter()
-  }, 1000)
-  return ref
+    ref.value = getter();
+  }, 1000);
+  return ref;
 }
-const a = computed(() => 100)
-a.value = 100
+const a = computed(() => 100);
+a.value = 100;
 ```
 
 3. 为什么需要 toRef toRefs？
@@ -262,44 +262,47 @@ a.value = 100
 ```tsx
 const obj = ref({
   a: 1,
-  b: 2
-})
-obj.value.a++ //不会触发重绘
-obj.value = { ...obj.value, a: 1 } // 触发重绘
+  b: 2,
+});
+obj.value.a++; //不会触发重绘
+obj.value = { ...obj.value, a: 1 }; // 触发重绘
 const obj1 = reactive({
   a: 1,
-  b: 2
-})
-obj1.a++ // 触发重绘
+  b: 2,
+});
+obj1.a++; // 触发重绘
 ```
-## toRef 和 toRefs ，这两个函数可以将值转换为`ref` 
+
+## toRef 和 toRefs ，这两个函数可以将值转换为`ref`
 
 ```tsx
-import { defineComponent, reactive, toRef, toRefs } from "vue"
+import { defineComponent, reactive, toRef, toRefs } from 'vue';
 export default defineComponent({
-	setup() {
-		const state = reactive({
-			a : 1,
-			b : '-' 
-		})
-		const aRef = toRef(state, 'a')
-		const bRef = toRef(state, 'b')
-		// 等价于
-		//const refs = toRefs(state)
-		//const aRef === refs.a
-		//const bRef === refs.b
-		return () => {
-			return <>
-				<h1>aRef : {aRef.value}</h1>
-				<h1>aRef : {aRef}</h1>
-				<h1>bRef : {bRef.value}</h1>
-				<h1>bRef : {bRef}</h1>
-				<button onClick={() => state.a++}>state.a++</button>
-				<button onClick={() => aRef.value++}>aRef.a++</button>
-			</>
-		}
-	}
-})
+  setup() {
+    const state = reactive({
+      a: 1,
+      b: '-',
+    });
+    const aRef = toRef(state, 'a');
+    const bRef = toRef(state, 'b');
+    // 等价于
+    //const refs = toRefs(state)
+    //const aRef === refs.a
+    //const bRef === refs.b
+    return () => {
+      return (
+        <>
+          <h1>aRef : {aRef.value}</h1>
+          <h1>aRef : {aRef}</h1>
+          <h1>bRef : {bRef.value}</h1>
+          <h1>bRef : {bRef}</h1>
+          <button onClick={() => state.a++}>state.a++</button>
+          <button onClick={() => aRef.value++}>aRef.a++</button>
+        </>
+      );
+    };
+  },
+});
 ```
 
 ## computed
@@ -324,13 +327,20 @@ export default defineComponent({
 ## jsx 实现作用域 slot
 
 ```jsx
+
 ```
 
 ## script setup 特性
-主要是 代码中 >3.2.0 ，建议 script写在template前面，放弃掉配置的方式，那必须重新注入定义配置的能力
+
+- 顶级的一些变量，自定义组件，可以直接用于模版
+- 能正常使用 ref reactive computed 的能力
+- 可以和其他 script 一起使用
+  主要是 代码中 >3.2.0 ，建议 script 写在 template 前面，放弃掉配置的方式，那必须重新注入定义配置的能力
+
 1. defineProps 定义组件接受属性
 2. defineEmits 定义事件
 3. defineExpose 定义暴露数据给父组件
+
 ```vue
 <script setup>
 import { ref } from 'vue';
@@ -340,7 +350,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['change', 'delete']);
 function onDelete() {
-  emit('delete','del-type');
+  emit('delete', 'del-type');
 }
 </script>
 
@@ -349,7 +359,6 @@ function onDelete() {
   <button @click="$emit('change', 'add-type')">emit change</button>
   <button @click="onDelete">delete</button>
 </template>
-
 ```
 
 ## Effect Scope

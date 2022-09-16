@@ -327,24 +327,29 @@ export default defineComponent({
 ```
 
 ## script setup 特性
-主要是 代码中 >3.2.0
-
+主要是 代码中 >3.2.0 ，建议 script写在template前面，放弃掉配置的方式，那必须重新注入定义配置的能力
+1. defineProps 定义组件接受属性
+2. defineEmits 定义事件
+3. defineExpose 定义暴露数据给父组件
 ```vue
-<!--  defineProps -->
 <script setup>
-  import { ref } from 'vue';
-  // 定义属性
-  const props = defineProps({
-    msg: String,
-    age: Number
-  });
+import { ref } from 'vue';
+const props = defineProps({
+  name: String,
+  age: Number,
+});
+const emit = defineEmits(['change', 'delete']);
+function onDelete() {
+  emit('delete','del-type');
+}
+</script>
 
-  const count = ref(0);
-<script>
 <template>
-  <h1>{{ msg }}</h1>
-  <button type="button" @click="count++">count is {{ count }}</button>
+  <h1>child - name:{{ props.name }} | age: {{ props.age }}</h1>
+  <button @click="$emit('change', 'add-type')">emit change</button>
+  <button @click="onDelete">delete</button>
 </template>
+
 ```
 
 ## Effect Scope

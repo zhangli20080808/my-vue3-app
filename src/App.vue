@@ -1,8 +1,10 @@
 <script setup>
-import { reactive, ref, toRefs } from 'vue';
+import { reactive, ref, toRefs, onMounted } from 'vue';
 
 import HelloWorld from './components/HelloWorld.vue';
 const ageRef = ref(100);
+// 获取子组件信息
+const childRef = ref(null);
 const state = reactive({
   name: 'zl',
 });
@@ -17,6 +19,11 @@ function addCount() {
 function onDelete(info) {
   console.log('delete', info);
 }
+
+onMounted(() => {
+  console.log(childRef.value);
+  console.log(childRef.value.passCount);
+});
 </script>
 
 <template>
@@ -26,6 +33,7 @@ function onDelete(info) {
     :age="ageRef"
     @change="onChange"
     @delete="onDelete"
+    ref="childRef"
   />
 </template>
 

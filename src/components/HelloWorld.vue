@@ -5,8 +5,12 @@ const props = defineProps({
   age: Number,
 });
 const emit = defineEmits(['change', 'delete']);
+const passCount = ref('我是组件需要暴漏的数据');
+defineExpose({
+  passCount,
+});
 function onDelete() {
-  emit('delete','del-type');
+  emit('delete', 'del-type');
 }
 </script>
 
